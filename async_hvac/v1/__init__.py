@@ -18,7 +18,8 @@ except ImportError:
 class AsyncClient(object):
     def __init__(self, url='http://127.0.0.1:8200', token=None,
                  cert=None, verify=True, timeout=30, proxies=None,
-                 allow_redirects=True, session=None, loop=None):
+                 allow_redirects=True, session=None, loop=None,
+                 namespace=None):
 
         self.allow_redirects = allow_redirects
         self._session = session
@@ -29,6 +30,8 @@ class AsyncClient(object):
         self._cert = cert
         self._proxies = proxies
         self._loop = loop
+        self._namespace = namespace
+
         self._sslcontext = None
         if verify and self._cert:
             self._sslcontext = ssl.create_default_context(cafile=verify)
@@ -1634,6 +1637,9 @@ class AsyncClient(object):
 
         if self.token:
             headers['X-Vault-Token'] = self.token
+
+        if self._namespace:
+            headers['X-Vault-Namespace'] = self._namespace
 
         wrap_ttl = kwargs.pop('wrap_ttl', None)
         if wrap_ttl:

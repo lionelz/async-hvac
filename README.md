@@ -34,10 +34,14 @@ client = async_hvac.AsyncClient(url='http://localhost:8200', token=os.environ['V
 client = async_hvac.AsyncClient(url='https://localhost:8200')
 
 # Using TLS with client-side certificate authentication
-client = async_hvac.AsyncClient(url='https://localhost:8200',
-                                cert=('path/to/cert.pem', 'path/to/key.pem'))
- # Skipping TLS verification entirely (should only be used for local development; unsafe for production clusters)
+client = async_hvac.AsyncClient(url='https://localhost:8200', cert=('path/to/cert.pem', 'path/to/key.pem'))
+
+ # Skipping TLS verification entirely (should only be used for 
+ # local development; unsafe for production clusters)
 client = async_hvac.AsyncClient(url='https://localhost:8200', verify=False)
+
+# Using namespace
+client = async_hvac.AsyncClient(url='https://localhost:8200', namespace=os.getenv('VAULT_NAMESPACE'))
 ```
 
 Note that you will have to close the client with `client.close()` in order to
